@@ -1,0 +1,26 @@
+{
+  "name": "express_server",
+  "version": "1.0.0",
+  "description": "This is a boilerplate vagrant solution for students taking the course sevrer based web programming at the Linnaeus University, Kalmar, Sweden",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/1dv023/jb223pu-examination-2.git"
+  },
+  "author": "jimmybengtsson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/1dv023/jb223pu-examination-2/issues"
+  },
+  "homepage": "https://github.com/1dv023/jb223pu-examination-2#readme",
+  "dependencies": {
+    "express": "^4.15.2"
+  },
+  "devDependencies": {
+    "jscs": "^3.0.7",
+    "jshint": "^2.9.4"
+  }
+}
