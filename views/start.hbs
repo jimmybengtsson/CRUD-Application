@@ -1,0 +1,19 @@
+<h1>Hello!</h1>
+<p>
+    Messages
+</p>
+
+<ul>
+    {{#each data}}
+        <li>{{ this.message }} </li>
+    {{/each}}
+</ul>
+
+<hr>
+
+<form class="" action="/" method="post">
+    <input type="text" name="message" value=""><br>
+    <button>Send Message!</button>
+</form>
+
+<a href="/register">Register here!</a>
