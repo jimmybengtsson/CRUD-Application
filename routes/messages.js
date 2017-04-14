@@ -6,7 +6,11 @@ let Message = require("../models/Message");
 router.route('/message/messages')
     .get((req, res) => {
 
-        Message.find({}, function(error, data) {
+        if (!req.session.user) {
+            return res.status(401).send();
+        }
+
+        Message.find({}, (error, data) => {
 
                 // mapping up the object for the view
                 let context = {
@@ -23,8 +27,38 @@ router.route('/message/messages')
             });
 
     });
+
+router.route('/message/messagesPublic')
+    .get((req, res) => {
+
+        if (req.session.user) {
+            return res.redirect('messages');
+        }
+
+        Message.find({}, (error, data) => {
+
+            // mapping up the object for the view
+            let context = {
+                messages: data.map(function(message) {
+                    return {
+                        text: message.text,
+                        createdAt: message.createdAt,
+                        id: message._id
+                    };
+
+                })
+            };
+            res.render('message/messagesPublic', context);
+        });
+
+    });
+
 router.route('/message/create')
     .get((req, res) => {
+
+        if (!req.session.user) {
+            return res.status(401).send();
+        }
 
         res.render('message/create');
     })
@@ -44,7 +78,7 @@ router.route('/message/create')
             }).catch((error) => {
                 console.log(error.message);
 
-            res.redirect('messages');
+                res.redirect('messages');
             });
     });
 
@@ -52,6 +86,10 @@ router.route('/message/create')
 
 router.route('/message/delete/:id')
     .get((req, res) => {
+
+        if (!req.session.user) {
+            return res.status(401).send();
+        }
 
         res.render("message/delete", {id: req.params.id});
     })
@@ -70,6 +108,10 @@ router.route('/message/delete/:id')
 
 router.route('/message/update/:id')
     .get((req, res) => {
+
+        if (!req.session.user) {
+            return res.status(401).send();
+        }
 
         Message.findById(req.params.id, (error, data) => {
 

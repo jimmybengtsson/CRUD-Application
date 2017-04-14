@@ -6,6 +6,10 @@ let configDB = {
 
 let configSession = {
 
+    secret: 'qwert-asdfg-zxcvb',
+    resave: false,
+    saveUninitialized: true
+
 };
 
 module.exports.configDB = configDB;

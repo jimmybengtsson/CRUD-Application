@@ -5,10 +5,10 @@ let handlebars = require('express-handlebars');
 let bodyParser = require('body-parser');
 let path = require('path');
 let session = require('express-session');
+let cookieParser = require('cookie-parser');
+const sessionConfig = require('./config/config.js').configSession;
 
-let startDB = require('./libs/mongo.js');
-
-let messages = [{message: 'test'}, {message: 'test2'}];
+let startDB = require('./libs/mongoMessages.js');
 
 let app = express();
 let port = process.env.PORT || 8000;
@@ -24,6 +24,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Parse JSON data
 
 app.use(bodyParser.json());
+
+app.use(cookieParser());
+
+// Start session
+
+app.use(session(sessionConfig));
 
 // Configuration for handlebars.
 
@@ -44,18 +50,7 @@ app.use('/', require('./routes/start.js'));
 
 app.use('/', require('./routes/messages.js'));
 
-// Start session
-
-/*app.use(session({
-    secret: "secret",
-    resave: false,
-    saveUninitialized: true,
-    cookie: {secure: true,
-        httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 24
-    }
-}));*/
-
+app.use('/', require('./routes/autho.js'));
 
 /* If get request.
 
@@ -76,7 +71,7 @@ app.get('/', (request, response) => {
     response.redirect('/');
 });*/
 
-app.get('/message/messages', (request, response) => {
+app.get('/message/messagesPublic', (request, response) => {
 
     response.render('message/messages');
 });
