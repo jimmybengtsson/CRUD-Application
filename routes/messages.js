@@ -91,7 +91,7 @@ router.route('/message/delete/:id')
             return res.status(401).send();
         }
 
-        res.render("message/delete", {id: req.params.id});
+        res.render('message/delete', {id: req.params.id});
     })
     .post((req, res) => {
         Message.findOneAndRemove({_id: req.params.id}, (error) => {

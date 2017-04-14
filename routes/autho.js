@@ -21,9 +21,12 @@ router.route('/session/register')
 
     console.log(newUser);
 
-    newUser.save().then(() => {
+    newUser.save().then((user) => {
 
-        res.redirect('/message/messages');
+        req.session.user = user;
+
+        return res.redirect('/message/messages');
+
     }).catch((error) => {
         console.log(error.message);
 
@@ -68,6 +71,20 @@ router.route('/')
 
             return res.redirect('/message/messages');
         });
+    });
+
+// Logout
+
+router.route('/session/logout')
+    .get((req, res) => {
+
+        res.render('session/logout');
+    })
+    .post((req, res) => {
+
+    req.session.destroy();
+    return res.redirect('/');
+
     });
 
 module.exports = router;
