@@ -1,0 +1,11 @@
+<p>
+    Messages
+</p>
+
+<ul>
+    {{#each messages}}
+        <li>{{ text }} <a href="delete/{{id}}">Remove</a><a href="update/{{id}}">Update</a></li>
+    {{/each}}
+</ul>
+
+<a href="/message/create">Write message</a>

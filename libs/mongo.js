@@ -6,7 +6,7 @@ function startDB() {
 
     // Get database configuration
 
-    let configDB = require("../config/configDB.js");
+    let configDB = require("../config/config.js").configDB;
     let db = mongoose.connection;
 
     // Event emitters
@@ -19,14 +19,18 @@ function startDB() {
         console.log('Database connected.');
     });
 
-    process.on('SIGINT', () =>{
+    process.on('SIGINT', () => {
         db.close(() => {
-            console.log('Mongoose disconnected becaus of app termination.');
+            console.log('Mongoose disconnected because of app termination.');
             process.exit(0);
         });
     });
 
-    mongoose.connect(configDB.connectionString);
+    // Connect
+
+    mongoose.Promise = global.Promise;
+
+    return mongoose.connect(configDB.connectionString);
 }
 
 module.exports = startDB;

@@ -1,19 +1,16 @@
 <h1>Hello!</h1>
-<p>
-    Messages
-</p>
-
-<ul>
-    {{#each data}}
-        <li>{{ this.message }} </li>
-    {{/each}}
-</ul>
-
-<hr>
 
 <form class="" action="/" method="post">
-    <input type="text" name="message" value=""><br>
-    <button>Send Message!</button>
+    <h3>Login</h3>
+    User name:
+    <input type="text" name="username" value="">
+    Password:
+    <input type="text" name="password" value="">
+
+    <button>Login</button>
 </form>
 
+<br><br>
+
 <a href="/register">Register here!</a>
+<a href="/message/messages">Messages</a>

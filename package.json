@@ -21,7 +21,8 @@
     "express": "^4.15.2",
     "express-handlebars": "^3.0.0",
     "express-session": "^1.15.1",
-    "mongoose": "^4.9.1"
+    "mongoose": "^4.9.1",
+    "path": "^0.12.7"
   },
   "devDependencies": {
     "jscs": "^3.0.7",
