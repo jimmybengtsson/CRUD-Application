@@ -44,7 +44,7 @@ router.route('/message/create')
             }).catch((error) => {
                 console.log(error.message);
 
-                //res.redirect('/');
+            res.redirect('messages');
             });
     });
 
@@ -62,6 +62,32 @@ router.route('/message/delete/:id')
             }
 
             res.redirect('/message/messages');
+        });
+
+    });
+
+// Update message
+
+router.route('/message/update/:id')
+    .get((req, res) => {
+
+        Message.findById(req.params.id, (error, data) => {
+
+            if (!data) {
+                console.log(error);
+            }
+
+            return res.render("message/update", data);
+        });
+    })
+    .post((req, res) => {
+        Message.findOneAndUpdate({_id: req.params.id}, {$set:{text: req.body.message}}, {new: true}, (error) => {
+            if (error) {
+                throw new Error('Something went wrong!');
+            }
+
+            res.redirect('/message/messages');
+
         });
 
     });

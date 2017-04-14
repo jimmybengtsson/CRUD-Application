@@ -81,9 +81,9 @@ app.get('/message/messages', (request, response) => {
     response.render('message/messages');
 });
 
-app.get('/register', (request, response) => {
+app.get('/session/register', (request, response) => {
 
-    response.render('register');
+    response.render('session/register');
 });
 
 // Start the application.
