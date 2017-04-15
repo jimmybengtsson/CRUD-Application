@@ -19,7 +19,7 @@ let User = mongoose.Schema(
 
 
 
-// Hash the password. Got help from: http://stackoverflow.com/questions/14588032/mongoose-password-hashing
+// Hash the password. Got help from: https://www.mongodb.com/blog/post/password-authentication-with-mongoose-part-1
 
 User.pre('save', function(next) {
     let user = this;
@@ -48,6 +48,8 @@ User.pre('save', function(next) {
         });
     });
 });
+
+// Compare the password in database
 
 User.methods.comparePassword = function(candidatePassword, cb) {
     bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {

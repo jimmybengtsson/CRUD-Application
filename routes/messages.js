@@ -3,7 +3,7 @@
 let router = require("express").Router();
 let Message = require("../models/Message");
 
-// Render all messages and check if loggedin.
+// Render all messages and check if logged in.
 
 router.route('/message/messages')
     .get((req, res) => {
@@ -33,10 +33,10 @@ router.route('/message/messages')
                 };
                 res.render('message/messages', context);
             });
-
-        // Create a message
-
     })
+
+    // Create a message
+
     .post((req, res) => {
 
         let messageText = req.body.message;
@@ -126,13 +126,13 @@ router.route('/message/update/:id')
 
         if (!req.session.user) {
 
-                req.session.flash = {
-                    type: 'errorFlash',
-                    message: 'Have to be logged in to update message'
-                };
+            req.session.flash = {
+                type: 'errorFlash',
+                message: 'Have to be logged in to update message'
+            };
 
-                return res.redirect('/');
-            }
+            return res.redirect('/');
+        }
 
         Message.findById(req.params.id, (error, data) => {
 

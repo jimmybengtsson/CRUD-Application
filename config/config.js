@@ -6,7 +6,7 @@ let configDB = {
         connectionString: 'mongodb://localhost/messagesDB'
     };
 
-// Config for
+// Config for session
 
 let configSession = {
 

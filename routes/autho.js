@@ -21,7 +21,7 @@ router.route('/session/register')
         lastName: req.body.lastname
     });
 
-    console.log(newUser);
+    // Check so new username doesnt exist etc.. And save it.
 
     newUser.save((err, user) => {
 
@@ -49,7 +49,7 @@ router.route('/session/register')
 
 });
 
-// Render messages if online
+// Render messages if online if not redirect to public.
 
 router.route('/message/messages')
     .get((req, res) => {
@@ -77,6 +77,8 @@ router.route('/')
 
     .post((req, res) => {
 
+    // Find the username from database
+
         User.findOne({username: req.body.username}, (err, user) => {
 
             if (err) {
@@ -93,6 +95,8 @@ router.route('/')
                 };
                 return res.redirect('/');
             }
+
+            // Compare with hashed password in database
 
             user.comparePassword(req.body.password, (err, isMatch) => {
                 if (isMatch && isMatch === true) {
