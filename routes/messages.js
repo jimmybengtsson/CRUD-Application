@@ -3,6 +3,8 @@
 let router = require("express").Router();
 let Message = require("../models/Message");
 
+// Render all messages and check if loggedin.
+
 router.route('/message/messages')
     .get((req, res) => {
 
@@ -12,7 +14,6 @@ router.route('/message/messages')
 
         Message.find({}, (error, data) => {
 
-                // mapping up the object for the view
                 let context = {
                     messages: data.map(function(message) {
                         return {
@@ -26,6 +27,25 @@ router.route('/message/messages')
                 res.render('message/messages', context);
             });
 
+    })
+    .post((req, res) => {
+
+        let messageText = req.body.message;
+
+        let message = new Message({
+            text: messageText
+        });
+
+        console.log(message);
+
+        message.save().then(() => {
+
+            res.redirect('messages');
+        }).catch((error) => {
+            console.log(error.message);
+
+            res.redirect('messages');
+        });
     });
 
 router.route('/message/messagesPublic')
@@ -51,35 +71,6 @@ router.route('/message/messagesPublic')
             res.render('message/messagesPublic', context);
         });
 
-    });
-
-router.route('/message/create')
-    .get((req, res) => {
-
-        if (!req.session.user) {
-            return res.status(401).send();
-        }
-
-        res.render('message/create');
-    })
-    .post((req, res) => {
-
-        let messageText = req.body.message;
-
-        let message = new Message({
-                text: messageText
-            });
-
-        console.log(message);
-
-        message.save().then(() => {
-
-                res.redirect('messages');
-            }).catch((error) => {
-                console.log(error.message);
-
-                res.redirect('messages');
-            });
     });
 
 // Delete message

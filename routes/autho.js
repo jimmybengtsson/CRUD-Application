@@ -4,6 +4,8 @@ let router = require("express").Router();
 
 let User = require("../models/User");
 
+// Register a new user
+
 router.route('/session/register')
     .get((req, res) => {
 
@@ -21,19 +23,23 @@ router.route('/session/register')
 
     console.log(newUser);
 
-    newUser.save().then((user) => {
+    newUser.save((err, user) => {
+
+        if (err) {
+            console.log(err.message);
+
+            res.redirect('register');
+        }
 
         req.session.user = user;
 
         return res.redirect('/message/messages');
 
-    }).catch((error) => {
-        console.log(error.message);
-
-        res.redirect('register');
     });
 
 });
+
+// Render messages if online
 
 router.route('/message/messages')
     .get((req, res) => {
@@ -46,6 +52,8 @@ router.route('/message/messages')
 
     });
 
+// Handle login
+
 router.route('/')
     .get((req, res) => {
 
@@ -54,22 +62,29 @@ router.route('/')
 
     .post((req, res) => {
 
-        User.findOne({username: req.body.username, password: req.body.password}, (err, user) => {
-
-            console.log(user);
+        User.findOne({username: req.body.username}, (err, user) => {
 
             if (err) {
                 console.log(err);
                 res.status(500).send();
-                res.redirect('/');
+                return res.redirect('/');
             } else if (!user) {
                 res.status(404).send();
-                res.redirect('/');
+                return res.redirect('/');
             }
 
-            req.session.user = user;
+            user.comparePassword(req.body.password, (err, isMatch) => {
+                if (isMatch && isMatch === true) {
 
-            return res.redirect('/message/messages');
+                    req.session.user = user;
+                    return res.redirect('/message/messages');
+
+                } else {
+                    res.status(404).send();
+                    return res.redirect('/');
+                }
+            });
+
         });
     });
 
@@ -82,8 +97,8 @@ router.route('/session/logout')
     })
     .post((req, res) => {
 
-    req.session.destroy();
-    return res.redirect('/');
+        req.session.destroy();
+        return res.redirect('/');
 
     });
 

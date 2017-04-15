@@ -8,6 +8,12 @@
     {{/each}}
 </ul>
 
-<a href="/message/create">Write message</a>
+
+
+<form class="" action="/message/messages" method="post">
+    <input type="text" name="message" value=""><br>
+    <button>Send Message!</button>
+</form>
+
 <br>
 <a href="../session/logout">Logout</a>
