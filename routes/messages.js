@@ -9,7 +9,12 @@ router.route('/message/messages')
     .get((req, res) => {
 
         if (!req.session.user) {
-            return res.status(401).send();
+            req.session.flash = {
+                type: 'errorFlash',
+                message: 'Have to be logged in to view page. Redirecting to public messages.'
+            };
+
+            return res.redirect('/message/messagesPublic');
         }
 
         Message.find({}, (error, data) => {
@@ -19,7 +24,9 @@ router.route('/message/messages')
                         return {
                             text: message.text,
                             createdAt: message.createdAt,
-                            id: message._id
+                            id: message._id,
+                            firstName: message.firstName,
+                            lastName: message.lastName
                         };
 
                     })
@@ -27,26 +34,38 @@ router.route('/message/messages')
                 res.render('message/messages', context);
             });
 
+        // Create a message
+
     })
     .post((req, res) => {
 
         let messageText = req.body.message;
 
         let message = new Message({
-            text: messageText
+            text: messageText,
+            firstName: req.session.user.firstName,
+            lastName: req.session.user.lastName
         });
-
-        console.log(message);
 
         message.save().then(() => {
 
+            req.session.flash = {
+                type: "success",
+                message: "The post was created!"
+            };
+
             res.redirect('messages');
         }).catch((error) => {
-            console.log(error.message);
+            req.session.flash = {
+                type: 'errorFlash',
+                message: error.message
+            };
 
             res.redirect('messages');
         });
     });
+
+// Render the public message page
 
 router.route('/message/messagesPublic')
     .get((req, res) => {
@@ -90,6 +109,11 @@ router.route('/message/delete/:id')
                 throw new Error('Something went wrong!');
             }
 
+            req.session.flash = {
+                type: "success",
+                message: "The post was deleted!"
+            };
+
             res.redirect('/message/messages');
         });
 
@@ -101,8 +125,14 @@ router.route('/message/update/:id')
     .get((req, res) => {
 
         if (!req.session.user) {
-            return res.status(401).send();
-        }
+
+                req.session.flash = {
+                    type: 'errorFlash',
+                    message: 'Have to be logged in to update message'
+                };
+
+                return res.redirect('/');
+            }
 
         Message.findById(req.params.id, (error, data) => {
 
@@ -116,8 +146,17 @@ router.route('/message/update/:id')
     .post((req, res) => {
         Message.findOneAndUpdate({_id: req.params.id}, {$set:{text: req.body.message}}, {new: true}, (error) => {
             if (error) {
-                throw new Error('Something went wrong!');
+                req.session.flash = {
+                    type: 'errorFlash',
+                    message: error.message
+                };
+                res.redirect('/message/messages');
             }
+
+            req.session.flash = {
+                type: "success",
+                message: "The post was updated!"
+            };
 
             res.redirect('/message/messages');
 

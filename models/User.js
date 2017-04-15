@@ -10,8 +10,8 @@ const SALT_WORK_FACTOR = 10;
 
 let User = mongoose.Schema(
     {
-        username: { type: String, unique: true },
-        password: { type: String},
+        username: { type: String, required: true, unique: true  },
+        password: { type: String, required: true},
         firstName: String,
         lastName: String
 

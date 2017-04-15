@@ -13,8 +13,6 @@ router.route('/')
             return res.redirect('message/messages');
         }
 
-    console.log('start route');
-
         // Render start page
         res.render('start');
     });

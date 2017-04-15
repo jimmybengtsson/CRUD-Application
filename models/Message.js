@@ -7,7 +7,9 @@ let mongoose = require('mongoose');
 let messageSchema = mongoose.Schema(
     {
         text: { type: String, required: true },
-        createdAt: { type: Date, required: true, default: Date.now}
+        createdAt: { type: Date, required: true, default: Date.now},
+        firstName: { type: String, required: true },
+        lastName: { type: String, required: true }
 
     });
 

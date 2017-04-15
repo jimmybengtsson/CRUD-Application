@@ -28,8 +28,18 @@ router.route('/session/register')
         if (err) {
             console.log(err.message);
 
-            res.redirect('register');
-        }
+            req.session.flash = {
+                type: 'errorFlash',
+                message: err.message
+            };
+
+            return res.redirect('register');
+            }
+
+        req.session.flash = {
+            type: "success",
+            message: "User created!"
+        };
 
         req.session.user = user;
 
@@ -45,7 +55,12 @@ router.route('/message/messages')
     .get((req, res) => {
 
         if (!req.session.user) {
-            return res.status(401).send();
+            req.session.flash = {
+                type: 'errorFlash',
+                message: 'Have to be logged in to view page. Redirecting to public messages.'
+            };
+
+            return res.redirect('/message/messagesPublic');
         }
 
         return res.render('/message/messages');
@@ -66,10 +81,16 @@ router.route('/')
 
             if (err) {
                 console.log(err);
-                res.status(500).send();
+                req.session.flash = {
+                    type: "error",
+                    message: err.message
+                };
                 return res.redirect('/');
             } else if (!user) {
-                res.status(404).send();
+                req.session.flash = {
+                    type: 'errorFlash',
+                    message: "Username is incorrect! Please try again."
+                };
                 return res.redirect('/');
             }
 
@@ -77,10 +98,21 @@ router.route('/')
                 if (isMatch && isMatch === true) {
 
                     req.session.user = user;
+
+                    req.session.flash = {
+                        type: "success",
+                        message: "Logged in!"
+                    };
+
                     return res.redirect('/message/messages');
 
                 } else {
-                    res.status(404).send();
+
+                    req.session.flash = {
+                        type: 'errorFlash',
+                        message: "Password is incorrect! Please try again."
+                    };
+
                     return res.redirect('/');
                 }
             });
@@ -98,6 +130,7 @@ router.route('/session/logout')
     .post((req, res) => {
 
         req.session.destroy();
+
         return res.redirect('/');
 
     });

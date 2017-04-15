@@ -4,7 +4,7 @@
 
 <ul>
     {{#each messages}}
-        <li>{{ text }} <a href="delete/{{id}}">Remove</a><a href="update/{{id}}">Update</a></li>
+        <li><b>{{ firstName }} {{ lastName }}:</b> {{ text }} <a href="delete/{{id}}" class="removeLink">Remove</a><a href="update/{{id}}" class="removeLink">Update</a></li>
     {{/each}}
 </ul>
 
