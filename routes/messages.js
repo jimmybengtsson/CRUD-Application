@@ -19,10 +19,19 @@ router.route('/message/messages')
 
         Message.find({}, (error, data) => {
 
+
                 let context = {
                     messages: data.map(function(message) {
+
+                        if (message.text === null) {
+                            return;
+                        }
+
+                        let messageText = message.text;
+                        messageText = messageText.replace(/\r?\n/g, '<br />');
+
                         return {
-                            text: message.text,
+                            text: messageText,
                             createdAt: message.createdAt,
                             id: message._id,
                             firstName: message.firstName,
@@ -39,7 +48,7 @@ router.route('/message/messages')
 
     .post((req, res) => {
 
-        let messageText = req.body.message;
+        let messageText = req.body.textArea;
 
         let message = new Message({
             text: messageText,
@@ -79,8 +88,16 @@ router.route('/message/messagesPublic')
             // mapping up the object for the view
             let context = {
                 messages: data.map(function(message) {
+
+                    if (message.text === null) {
+                        return;
+                    }
+
+                    let messageText = message.text;
+                    messageText = messageText.replace(/\r?\n/g, '<br />');
+
                     return {
-                        text: message.text,
+                        text: messageText,
                         createdAt: message.createdAt,
                         id: message._id
                     };
@@ -144,7 +161,7 @@ router.route('/message/update/:id')
         });
     })
     .post((req, res) => {
-        Message.findOneAndUpdate({_id: req.params.id}, {$set:{text: req.body.message}}, {new: true}, (error) => {
+        Message.findOneAndUpdate({_id: req.params.id}, {$set:{text: req.body.textArea}}, {new: true}, (error) => {
             if (error) {
                 req.session.flash = {
                     type: 'errorFlash',

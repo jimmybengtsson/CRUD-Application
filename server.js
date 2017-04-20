@@ -1,6 +1,6 @@
 'use strict';
 
-// Import dependencies
+// Import
 
 let express = require('express');
 let handlebars = require('express-handlebars');

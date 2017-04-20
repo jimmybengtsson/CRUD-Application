@@ -47,6 +47,8 @@
     border-radius: 4px;
     margin-right: 2px;
     border:1px solid #000000;
+    position: relative;
+    top: -20px;
 }
 
 
@@ -67,3 +69,4 @@
     margin:auto;
     max-width:300px;
 }
+

@@ -1,8 +1,8 @@
 <p>Update message</p>
 
+<textarea id="textArea" form="message" name="textArea"> {{ text }} </textarea>
+<form id="message" action="/message/update/{{id}}" method="post">
 
-<form class="" action="/message/update/{{id}}" method="post">
-    <input type="text" name="message" value={{ text }}><br>
     <button>Update Message!</button>
 </form>
 

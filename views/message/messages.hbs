@@ -4,14 +4,13 @@
 
 <ul>
     {{#each messages}}
-        <li><b>{{ firstName }} {{ lastName }}:</b> {{ text }} <a href="delete/{{id}}" class="removeLink">Remove</a><a href="update/{{id}}" class="removeLink">Update</a></li>
+        <li><p class="messageName"><b>{{ firstName }} {{ lastName }}:</b></p><p> {{{ text }}} </p><a href="delete/{{id}}" class="removeLink">Remove</a><a href="update/{{id}}" class="removeLink">Update</a></li>
     {{/each}}
 </ul>
 
+<textarea id="textArea" form="message" name="textArea"></textarea>
 
-
-<form class="" action="/message/messages" method="post">
-    <input type="text" name="message" value=""><br>
+<form id="message" action="/message/messages" method="post">
     <button>Send Message!</button>
 </form>
 
